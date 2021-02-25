@@ -19,16 +19,16 @@
         @endforeach
     </td>
     <td class="text-center align-middle">
-        <a href="/contact/{{$contact->id}}/edit" title="Изменить">
+        <a href="/contact/update/{{$contact->id}}" title="Update">
             <svg class="bi" width="16" height="16" fill="currentColor">
-                <use xlink:href="assets/images/bootstrap-icons.svg#pencil-fill" />
+                <use xlink:href="/assets/images/bootstrap-icons.svg#pencil-fill" />
             </svg>
         </a>
     </td>
     <td class="text-center align-middle">
-        <a href="/contact/{{$contact->id}}/delete" title="Удалить">
+        <a href="/contact/delete/{{$contact->id}}" title="Delete">
             <svg class="bi" width="16" height="16" fill="currentColor">
-                <use xlink:href="assets/images/bootstrap-icons.svg#trash-fill" />
+                <use xlink:href="/assets/images/bootstrap-icons.svg#trash-fill" />
             </svg>
         </a>
     </td>

@@ -1,7 +1,7 @@
 @extends('layout')
 
 @include('contact.contact')
-@include('contact.add')
+@include('contact.form')
 
 @section('content')
 <div class="container">
@@ -9,7 +9,7 @@
     <p class="h3 text-center py-3">Absent-minded friend's contacts</p>
     <!-- Add contact button -->
     <div class="py-3">
-        <button type="button" class="btn btn-primary w-100" data-toggle="modal" data-target="#addContactModal">
+        <button type="button" class="btn btn-primary w-100" data-toggle="modal" data-target="#contactModal">
             Add
         </button>
     </div>
@@ -29,5 +29,5 @@
         </tbody>
     </table>
 </div>
-@yield('add-contact')
+@yield('contact-form')
 @endsection
