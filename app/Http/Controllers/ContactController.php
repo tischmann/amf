@@ -29,20 +29,18 @@ class ContactController extends Controller
             return $response;
         }
 
-        $contact = new Contact();
+        $contact = new Contact(['name' => $request->name]);
 
-        $contactId = $contact->addContact($request->name);
-
-        $phone = new Phone();
+        $contactId = $contact->addContact();
 
         foreach ($request->phones as $number) {
-            $phone->addPhone($contactId, $number);
+            $phone = new Phone(['contact_id' => $contactId, 'phone' => $number]);
+            $phone->addPhone();
         }
 
-        $email = new Email();
-
         foreach ($request->emails as $address) {
-            $email->addEmail($contactId, $address);
+            $email = new Email(['contact_id' => $contactId, 'email' => $address]);
+            $email->addEmail();
         }
 
         return response([
@@ -53,9 +51,8 @@ class ContactController extends Controller
 
     public function delete($id)
     {
-        $contact = new Contact();
-
-        $contact->deleteContact($id);
+        $contact = new Contact(['id' => $id]);
+        $contact->deleteContact();
         return view('contacts');
     }
 

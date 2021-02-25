@@ -9,8 +9,18 @@ class Email extends Model
 {
     use HasFactory;
 
-    public function addEmail($contactId, $email)
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'contact_id',
+        'email',
+    ];
+
+    public function addEmail()
     {
-        return Email::insertGetId(['contact_id' => $contactId, 'email' => $email]);
+        return Email::insertGetId(['contact_id' => $this->contact_id, 'email' => $this->email]);
     }
 }

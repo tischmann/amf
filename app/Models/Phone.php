@@ -9,8 +9,18 @@ class Phone extends Model
 {
     use HasFactory;
 
-    public function addPhone($contactId, $phone)
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'contact_id',
+        'phone',
+    ];
+
+    public function addPhone()
     {
-        return Phone::insertGetId(['contact_id' => $contactId, 'phone' => $phone]);
+        return Phone::insertGetId(['contact_id' => $this->contact_id, 'phone' => $this->phone]);
     }
 }

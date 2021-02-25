@@ -10,6 +10,15 @@ class Contact extends Model
 {
     use HasFactory;
 
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'name',
+    ];
+
     public function getContacts()
     {
         $contacts = Contact::orderBy('id')
@@ -26,8 +35,8 @@ class Contact extends Model
         return $contacts;
     }
 
-    public function addContact($name)
+    public function addContact()
     {
-        return Contact::insertGetId(['name' => $name]);
+        return Contact::insertGetId(['name' => $this->name]);
     }
 }
