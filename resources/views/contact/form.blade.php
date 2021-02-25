@@ -88,7 +88,7 @@
             input.next('.invalid-feedback').html(data.message);
             input[0].setCustomValidity(data.message);
             form.removeClass('was-validated');
-            this.checkValidity();
+            form[0].checkValidity();
             form.addClass('was-validated');
         }
 
