@@ -18,9 +18,4 @@ class Email extends Model
         'contact_id',
         'email',
     ];
-
-    public function addEmail()
-    {
-        return Email::insertGetId(['contact_id' => $this->contact_id, 'email' => $this->email]);
-    }
 }

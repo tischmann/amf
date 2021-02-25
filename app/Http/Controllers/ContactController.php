@@ -6,41 +6,55 @@ use App\Models\Contact;
 use App\Models\Email;
 use App\Models\Phone;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 
 class ContactController extends Controller
 {
-    public function index(Request $request)
+    public function index()
     {
-        return view('contacts', ["contacts" => (new Contact())->getContacts()]);
+        $contacts = Contact::orderBy('id', 'desc')->get();
+
+        foreach ($contacts as $contact) {
+            $contact->phones = Phone::where('contact_id', $contact->id)
+                ->pluck('phone');
+
+            $contact->emails = Email::where('contact_id', $contact->id)
+                ->pluck('email');
+        }
+
+        return view('contacts', ["contacts" => $contacts]);
     }
 
     public function insert(Request $request)
     {
         $this->validate($request, [
-            'name' => 'required',
-            'phones' => 'required',
-            'emails' => 'required'
+            'name' => 'required|String',
+            'phones' => 'required|Array',
+            'emails' => 'required|Array'
         ]);
 
-        $response = $this->validateContact($request);
+        $response = $this->existCheck($request);
 
-        if ($response !== true) {
-            return $response;
+        if ($response) {
+            return response([
+                'status' => 0,
+                'message' => $response
+            ]);
         }
 
-        $contact = new Contact(['name' => $request->name]);
+        $contact = Contact::create(['name' => $request->name]);
 
-        $contactId = $contact->addContact();
-
-        foreach ($request->phones as $number) {
-            $phone = new Phone(['contact_id' => $contactId, 'phone' => $number]);
-            $phone->addPhone();
+        foreach ($request->phones as $phone) {
+            Phone::create([
+                'contact_id' => $contact->id,
+                'phone' => $phone
+            ]);
         }
 
-        foreach ($request->emails as $address) {
-            $email = new Email(['contact_id' => $contactId, 'email' => $address]);
-            $email->addEmail();
+        foreach ($request->emails as $email) {
+            Email::create([
+                'contact_id' => $contact->id,
+                'email' => $email
+            ]);
         }
 
         return response([
@@ -51,38 +65,50 @@ class ContactController extends Controller
 
     public function delete($id)
     {
-        $contact = new Contact(['id' => $id]);
-        $contact->deleteContact();
-        return view('contacts');
+        $contact = Contact::find($id);
+
+        if ($contact) {
+            Phone::where('contact_id', $contact->id)->delete();
+            Email::where('contact_id', $contact->id)->delete();
+            $contact->delete();
+        }
+
+        return $this->index();
     }
 
-    protected function validateContact(Request $request)
+    protected function existCheck(Request $request)
     {
+        if ($this->contactExists($request->name)) {
+            return "Contact {$request->name} is exist";
+        }
+
         foreach ($request->phones as $phone) {
-            if (Phone::where('phone', $phone)->exists()) {
-                return response([
-                    'status' => 0,
-                    'message' => "Phone {$phone} is exist"
-                ]);
+            if ($this->phoneExists($phone)) {
+                return "Phone {$phone} is exist";
             }
         }
 
         foreach ($request->emails as $email) {
-            if (Email::where('email', $email)->exists()) {
-                return response([
-                    'status' => 0,
-                    'message' => "Email {$email} is exist"
-                ]);
+            if ($this->emailExists($email)) {
+                return "Email {$email} is exist";
             }
         }
 
-        if (Contact::where('name', $request->name)->exists()) {
-            return response([
-                'status' => 0,
-                'message' => "Contact {$request->name} is exist"
-            ]);
-        }
+        return false;
+    }
 
-        return true;
+    protected function contactExists(string $name)
+    {
+        return Contact::where('name', $name)->exists();
+    }
+
+    protected function phoneExists(string $phone)
+    {
+        return Phone::where('phone', $phone)->exists();
+    }
+
+    protected function emailExists(string $email)
+    {
+        return Email::where('email', $email)->exists();
     }
 }

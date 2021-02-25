@@ -18,9 +18,4 @@ class Phone extends Model
         'contact_id',
         'phone',
     ];
-
-    public function addPhone()
-    {
-        return Phone::insertGetId(['contact_id' => $this->contact_id, 'phone' => $this->phone]);
-    }
 }

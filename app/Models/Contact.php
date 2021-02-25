@@ -18,25 +18,4 @@ class Contact extends Model
     protected $fillable = [
         'name',
     ];
-
-    public function getContacts()
-    {
-        $contacts = Contact::orderBy('id')
-            ->get();
-
-        foreach ($contacts as $contact) {
-            $contact->phones = Phone::where('contact_id', $contact->id)
-                ->pluck('phone');
-
-            $contact->emails = Email::where('contact_id', $contact->id)
-                ->pluck('email');
-        }
-
-        return $contacts;
-    }
-
-    public function addContact()
-    {
-        return Contact::insertGetId(['name' => $this->name]);
-    }
 }
