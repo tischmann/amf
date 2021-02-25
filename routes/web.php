@@ -18,12 +18,10 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::prefix('contact')->group(function () {
-    Route::get('/all', [ContactController::class, 'index']);
+Route::prefix('contacts')->group(function () {
+    Route::get('/', [ContactController::class, 'index']);
     Route::get('/{id}', [ContactController::class, 'get']);
     Route::put('/', [ContactController::class, 'insert']);
-    Route::get('/update/{id}', [ContactController::class, 'update']);
-    Route::get('/delete/{id}', [ContactController::class, 'delete']);
     Route::post('/{id}', [ContactController::class, 'update']);
     Route::delete('/{id}', [ContactController::class, 'delete']);
 });
