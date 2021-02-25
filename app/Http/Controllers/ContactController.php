@@ -35,10 +35,7 @@ class ContactController extends Controller
         $response = $this->existCheck($request);
 
         if ($response) {
-            return response([
-                'status' => 0,
-                'message' => $response
-            ]);
+            return response()->json($response);
         }
 
         $contact = Contact::create(['name' => $request->name]);
@@ -57,9 +54,8 @@ class ContactController extends Controller
             ]);
         }
 
-        return response([
-            'status' => 1,
-            'message' => 'Success'
+        return response()->json([
+            'status' => 1
         ]);
     }
 
@@ -79,18 +75,30 @@ class ContactController extends Controller
     protected function existCheck(Request $request)
     {
         if ($this->contactExists($request->name)) {
-            return "Contact {$request->name} is exist";
+            return (object) [
+                'status' => 0,
+                'message' => 'Contact exists',
+                'value' => $request->name
+            ];
         }
 
         foreach ($request->phones as $phone) {
             if ($this->phoneExists($phone)) {
-                return "Phone {$phone} is exist";
+                return (object) [
+                    'status' => 0,
+                    'message' => 'Phone exists',
+                    'value' => $phone
+                ];
             }
         }
 
         foreach ($request->emails as $email) {
             if ($this->emailExists($email)) {
-                return "Email {$email} is exist";
+                return (object) [
+                    'status' => 0,
+                    'message' => 'Email exists',
+                    'value' => $email
+                ];
             }
         }
 

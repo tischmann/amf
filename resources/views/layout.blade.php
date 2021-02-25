@@ -1,3 +1,5 @@
+@include('error')
+
 <!doctype html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 
@@ -11,6 +13,7 @@
 </head>
 
 <body>
+    @yield('error-modal')
     @yield('content', 'Default content')
 </body>
 
