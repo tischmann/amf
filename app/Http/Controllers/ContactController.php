@@ -9,16 +9,39 @@ use Illuminate\Http\Request;
 
 class ContactController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $contacts = Contact::orderBy('id', 'desc')->paginate(5);
+        $search = $request->search ?? null;
+
+        $contacts = Contact::orderBy('id', 'desc');
+
+        if ($search) {
+            $contactsId = [];
+            $idPhones = Phone::where('phone', 'like', "%$search%")
+                ->pluck('contact_id');
+            $idEmails = Email::where('email', 'like', "%$search%")
+                ->pluck('contact_id');
+
+            foreach ($idPhones as $id) {
+                $contactsId[] = $id;
+            }
+
+            foreach ($idEmails as $id) {
+                $contactsId[] = $id;
+            }
+
+            $contacts->orWhere('name', 'like', "%$search%")
+                ->orWhereIn('id', array_unique($contactsId));
+        }
+
+        $contacts = $contacts->paginate(5);
 
         foreach ($contacts as $contact) {
             $contact->phones = $contact->getPhones();
             $contact->emails = $contact->getEmails();
         }
 
-        return view('contacts', ["contacts" => $contacts]);
+        return view('contacts', ["contacts" => $contacts, 'search' => $search]);
     }
 
     public function select($id)

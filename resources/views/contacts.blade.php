@@ -1,17 +1,22 @@
 @extends('layout')
 
+@include('contact.search')
 @include('contact.contact')
 @include('contact.form')
 
 @section('content')
 <div class="container">
-    <!-- Title -->
-    <p class="h3 text-center py-3">Absent-minded friend's contacts</p>
-    <!-- Add contact button -->
-    <div class="py-3">
-        <button type="button" class="btn btn-primary w-100" id="contactModalAdd">
-            Add
-        </button>
+    <!-- Button pane -->
+    <div class="row">
+        <div class="col-md-2 py-3">
+            <!-- Add contact button -->
+            <button type="button" class="btn btn-success w-100" id="contactModalAdd">
+                Add
+            </button>
+        </div>
+        <div class="col-md-10 py-3">
+            @yield('contact-search')
+        </div>
     </div>
     <!-- Table -->
     <table class="table table-sm table-bordered table-hover">
@@ -28,7 +33,7 @@
             @yield('contact')
         </tbody>
     </table>
-    {{ $contacts->onEachSide(5)->links() }}
+    {{ $contacts->appends(Request::except('page'))->onEachSide(5)->links() }}
 </div>
 @yield('contact-form')
 @endsection
