@@ -21,11 +21,11 @@ class Contact extends Model
 
     public function getPhones()
     {
-        return Phone::where('contact_id', $this->id)->pluck('phone');
+        return Phone::where('contact_id', $this->id)->get();
     }
 
     public function getEmails()
     {
-        return Email::where('contact_id', $this->id)->pluck('email');
+        return Email::where('contact_id', $this->id)->get();
     }
 }

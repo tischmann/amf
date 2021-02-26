@@ -11,7 +11,7 @@ class ContactController extends Controller
 {
     public function index(Request $request)
     {
-        $search = $request->search ?? null;
+        $search = trim($request->search ?? null);
 
         $contacts = Contact::orderBy('id', 'desc');
 

@@ -12,6 +12,7 @@
         $('#resetSearchButton').click(function() {
             window.location = location.protocol + '//' + location.host + location.pathname;
         });
+
         $('#searchButton').click(function() {
             window.location = encodeURI(location.protocol + '//' + location.host + location.pathname + `?search=${$('#searchValue').val()}`);
         });
