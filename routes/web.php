@@ -20,7 +20,7 @@ Route::get('/', function () {
 
 Route::prefix('contacts')->group(function () {
     Route::get('/', [ContactController::class, 'index']);
-    Route::get('/{id}', [ContactController::class, 'get']);
+    Route::get('/{id}', [ContactController::class, 'select']);
     Route::put('/', [ContactController::class, 'insert']);
     Route::post('/{id}', [ContactController::class, 'update']);
     Route::delete('/{id}', [ContactController::class, 'delete']);
