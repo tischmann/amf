@@ -18,4 +18,14 @@ class Contact extends Model
     protected $fillable = [
         'name',
     ];
+
+    public function getPhones()
+    {
+        return Phone::where('contact_id', $this->id)->pluck('phone');
+    }
+
+    public function getEmails()
+    {
+        return Email::where('contact_id', $this->id)->pluck('email');
+    }
 }

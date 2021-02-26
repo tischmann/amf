@@ -4,8 +4,8 @@
     <div class="input-group-append">
         <button class="btn btn-success btn-add" type="button">Add</button>
     </div>
-    <div class="invalid-feedback" data-default="Enter valid email address">
-        Enter valid email address
+    <div class="invalid-feedback" data-default="Invalid email address">
+        Invalid email address
     </div>
 </div>
 @endsection

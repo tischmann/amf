@@ -9,7 +9,7 @@
     <p class="h3 text-center py-3">Absent-minded friend's contacts</p>
     <!-- Add contact button -->
     <div class="py-3">
-        <button type="button" class="btn btn-primary w-100" data-toggle="modal" data-target="#contactModal">
+        <button type="button" class="btn btn-primary w-100" id="contactModalAdd">
             Add
         </button>
     </div>
