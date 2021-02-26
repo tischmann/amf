@@ -22,7 +22,8 @@ class EmailFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'contact_id' => $this->faker->numberBetween(1, 30),
+            'email' => $this->faker->unique()->safeEmail,
         ];
     }
 }
