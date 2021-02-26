@@ -11,7 +11,7 @@ class ContactController extends Controller
 {
     public function index()
     {
-        $contacts = Contact::orderBy('id', 'desc')->get();
+        $contacts = Contact::orderBy('id', 'desc')->paginate(5);
 
         foreach ($contacts as $contact) {
             $contact->phones = $contact->getPhones();

@@ -28,6 +28,7 @@
             @yield('contact')
         </tbody>
     </table>
+    {{ $contacts->onEachSide(5)->links() }}
 </div>
 @yield('contact-form')
 @endsection
